@@ -5,7 +5,7 @@ mongoose.connect("mongodb+srv://brandon:<pw>@soup-dmnpg.mongodb.net/Soup?retryWr
 	function(err){
 		if(err){
 			console.log("DB failed.");
-			console.log(err);
+			//console.log(err);
 			throw err;
 		}
 		console.log("DB success.");

@@ -11,7 +11,7 @@ class Navbar extends Component {
           <li><a>Menu</a></li>
           <li><a href="/recipe">Recipes</a></li>
           <li><a>Inventory</a></li>
-          <li><a>Contact Us</a></li>
+          <li><a>About</a></li>
         </nav>
       </header>
     );

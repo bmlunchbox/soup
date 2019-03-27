@@ -1,7 +1,7 @@
 .recipe-card {
 	width: 31%;
 	min-width: 240px;
-	max-width: 360px;
+	max-width: 410px;
 	margin: 1%;
 	border: 1px solid rgba (160, 160, 160, 0.2);
 	background: white;
@@ -40,4 +40,5 @@ p {
 .remove {
 	float: right;
 	margin-right: 15px;
+	cursor: pointer;
 }

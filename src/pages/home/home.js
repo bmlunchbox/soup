@@ -18,18 +18,18 @@ export default class Home extends Component {
     render() {
         return (
             <div className="container">
-                <h2>welcome to the jungle</h2>
-                <button className="button menu">Menu</button>
-                <br></br>
-                <button className="button recipe" onClick={this.recipes}>Recipes</button>
-                <br></br>
-                <button className="button inventory">Inventory</button>
-                {
-                    this.state.redirect
-                        ? <Redirect to={(this.state.redirectTo)}/>
-                        : null
-                }
-
+                <div className="button-container">
+                    <button className="button menu">Menu</button>
+                    <br></br>
+                    <button className="button recipe" onClick={this.recipes}>Recipes</button>
+                    <br></br>
+                    <button className="button inventory">Inventory</button>
+                    {
+                        this.state.redirect
+                            ? <Redirect to={(this.state.redirectTo)}/>
+                            : null
+                    }
+                </div>
             </div>
         );
     }

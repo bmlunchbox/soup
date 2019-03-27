@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  -webkit-scrollbar { width: 0 !important }
 }
 
 .App-link {
