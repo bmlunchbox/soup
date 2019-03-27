@@ -45,7 +45,7 @@ header nav li:last-child {
 
 @media (max-width: 1000px) {
   header{
-    padding: 20px 50px;
+    padding: 15px 50px;
   }
 }
 

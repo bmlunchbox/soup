@@ -27,7 +27,7 @@ class RecipePage extends Component {
           title: "Avocado Toast",
           instructions: "Toast bread.  Slice avocado and spread on bread.  Add salt, oil, and pepper to taste.",
           ingredients: ["2 slices of bread", "1 avocado", "1 tablespoon olive oil", "1 pinch of salt", "pepper"],
-          img: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=968&q=80"
+          img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1053&q=80"
         }
       ],
       nextRecipeId: 3,
@@ -53,17 +53,19 @@ class RecipePage extends Component {
     const recipes = this.state.recipes.filter(r => r.id !== id);
     this.setState({recipes});
   }
-  /*<Navbar onNewRecipe={() => this.setState({showForm: true})} />
+
+  render() {
+    const {showForm} = this.state;
+    return (
+      <div>
+        <button className="button-save" onClick={() => this.setState({showForm: true})}>Add New</button>
         { showForm ?
             <RecipeInput 
               onSave={this.handleSave}
               onClose={() => this.setState({showForm: false})}  
             /> :
-            null }*/
-  render() {
-    const {showForm} = this.state;
-    return (
-      <div>
+            null 
+        }
         <RecipeList onDelete={this.onDelete} recipes={this.state.recipes} />
       </div>
     );
