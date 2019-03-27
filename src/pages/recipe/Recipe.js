@@ -30,7 +30,7 @@ class Recipe extends Component {
           </ul>
           <h4>Instructions:</h4>
           <p>{instructions}</p>
-          <button type="button" onClick={() => onDelete(id)}>Remove Item</button>
+          <button className="button-remove" type="button" onClick={() => onDelete(id)}>Remove Item</button>
         </div>
       </div>
     );

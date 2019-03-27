@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import Navbar from './constants/Navbar';
 import RecipeInput from './RecipeInput';
 import RecipeList from './RecipeList';
-import './RecipeApp.css';
+import './RecipePage.css';
 
-class RecipeApp extends Component {
+class RecipePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,22 +53,21 @@ class RecipeApp extends Component {
     const recipes = this.state.recipes.filter(r => r.id !== id);
     this.setState({recipes});
   }
-  
-  render() {
-    const {showForm} = this.state;
-    return (
-      <div className="App">
-        <Navbar onNewRecipe={() => this.setState({showForm: true})} />
+  /*<Navbar onNewRecipe={() => this.setState({showForm: true})} />
         { showForm ?
             <RecipeInput 
               onSave={this.handleSave}
               onClose={() => this.setState({showForm: false})}  
             /> :
-            null }
+            null }*/
+  render() {
+    const {showForm} = this.state;
+    return (
+      <div>
         <RecipeList onDelete={this.onDelete} recipes={this.state.recipes} />
       </div>
     );
   }
 }
 
-export default RecipeApp;
+export default RecipePage;
