@@ -1,6 +1,6 @@
 var express = require('express'),
 	router = express.Router(),
-	db = require("../models");
+	db = require("../models/server.js");
 	helpers = require("../helpers/recipes");
 
 router.route('/')

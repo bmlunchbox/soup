@@ -1,4 +1,4 @@
-var db = require('../models');
+var db = require('../models/recipe.js');
 
 exports.getRecipes = function(req, res){
 	db.Recipe.find()

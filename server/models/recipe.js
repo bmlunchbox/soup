@@ -1,13 +1,15 @@
 var mongoose = require('mongoose');
 
 var recipeSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: 'Name cannot be blank.'
     },
-    completed: {
-        type: Boolean,
-        default: false
+    instructions: {
+        type: String,
+    },
+    url: {
+        type: String
     },
     created_date: {
         type: Date,
@@ -15,6 +17,6 @@ var recipeSchema = new mongoose.Schema({
     }
 }, {collection: 'Recipes'});
 
-var Recipe = mongoose.model('Recipe', todoSchema);
+var Recipe = mongoose.model('Recipe', recipeSchema);
 
 module.exports = Recipe;
