@@ -23,8 +23,8 @@ class Inventory extends Component {
 					<Table celled className="ui table">
 						<Table.Header>
 							<Table.Row>
-								<Table.HeaderCell textAlign='center'>Item</Table.HeaderCell>
-								<Table.HeaderCell textAlign='center'>Stock</Table.HeaderCell>
+								<Table.HeaderCell className="twelve wide" textAlign='center'>Item</Table.HeaderCell>
+								<Table.HeaderCell className="four wide" textAlign='center'>Stock</Table.HeaderCell>
 							</Table.Row>
 						</Table.Header>
 

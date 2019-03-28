@@ -77,6 +77,7 @@ class RecipePage extends Component {
     return (
       <div>
         <button className="button-save" onClick={this.handleOpenModal}>Add New</button>
+        <h2 className="title">Recipes</h2>
         <Modal isOpen={this.state.showForm}>
           <RecipeInput 
             onSave={this.handleSave} 
