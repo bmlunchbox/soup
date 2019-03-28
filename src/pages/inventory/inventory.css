@@ -1,0 +1,31 @@
+.title {
+	padding-top: 35px;
+}
+
+.table-container{
+	width: 30vw;
+	margin: 30px auto;
+}
+
+.item-col{
+	width: 60%;
+}
+
+.button-inventory{
+	margin: 15px auto 20px auto;
+	position: relative;
+	height: 28px;
+	color: #F3F3F3;
+	border: #FF3B3F 2px solid;
+	border-radius: 3px;
+	background: #FF3B3F;
+	box-shadow: none;
+	transition: all 0.2s ease-in-out;
+}
+
+	.button-inventory:hover {
+		cursor: pointer;
+		color: #FF3B3F;
+		background: white;
+		box-shadow: 0 2px 4px 0 hsla(0, 0%, 0%, 0.2);
+	}

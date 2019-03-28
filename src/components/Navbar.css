@@ -4,7 +4,7 @@ header {
   justify-content: space-between;
   align-items: center;
   color: white;
-  padding: 0 15px;
+  padding: 10px 15px 0 15px;
   color: #343538;
 }
 
@@ -45,7 +45,7 @@ header nav li:last-child {
 
 @media (max-width: 1000px) {
   header{
-    padding: 15px 50px;
+    padding: 20px 50px;
   }
 }
 
