@@ -15,15 +15,15 @@ class Inventory extends Component {
 	render(){
 		return(
 			<div className="container">
-				<h2 className="title">Inventory</h2>
 				<div>
 					<button className="button-inventory">Add Item</button>
 				</div>
+				<h2 className="title">Inventory</h2>
 				<div className="table-container">
 					<Table celled className="ui table">
 						<Table.Header>
 							<Table.Row>
-								<Table.HeaderCell textAlign='center' className="item-col">Item</Table.HeaderCell>
+								<Table.HeaderCell textAlign='center'>Item</Table.HeaderCell>
 								<Table.HeaderCell textAlign='center'>Stock</Table.HeaderCell>
 							</Table.Row>
 						</Table.Header>

@@ -1,5 +1,5 @@
 .title {
-	padding-top: 35px;
+	padding-top: 25px;
 }
 
 .table-container{
@@ -7,12 +7,8 @@
 	margin: 30px auto;
 }
 
-.item-col{
-	width: 60%;
-}
-
 .button-inventory{
-	margin: 15px auto 20px auto;
+	margin: 25px auto 10px auto;
 	position: relative;
 	height: 28px;
 	color: #F3F3F3;
