@@ -2,17 +2,49 @@ import React, {Component} from 'react';
 import { Table } from 'semantic-ui-react';
 import './inventory.css';
 
-const RowEntry = (elem) => {
-
+const RowEntry = ({item, stock}) => {
+	return(
+		<Table.Row>
+			<Table.Cell>{item}</Table.Cell>
+			<Table.Cell>
+				<div className="ui transparent input">
+					<input type="text" placeholder={stock}/>
+				</div>
+			</Table.Cell>
+		</Table.Row>
+	);
 }
 
 class Inventory extends Component {
 	constructor(props){
 		super(props);
-		this.state = {};
+		this.state = {
+			inventory: [
+				{
+					id: 0,
+					item: "carrots",
+					stock: 1000
+				},
+				{
+					id: 1,
+					item: "yes",
+					stock: 123
+				},
+				{
+					id: 2,
+					item: "no",
+					stock: 0
+				}
+			],
+			nextId: 3
+		};
 	}
 
 	render(){
+		const entries = this.state.inventory.map((elem) => (
+			<RowEntry key={elem.id} {...elem}/>
+		));
+
 		return(
 			<div className="container">
 				<div>
@@ -29,22 +61,7 @@ class Inventory extends Component {
 						</Table.Header>
 
 						<Table.Body>
-							<Table.Row>
-								<Table.Cell>Item Name</Table.Cell>
-								<Table.Cell>
-									<div className="ui transparent input">
-										<input type="text" placeholder="0"/>
-									</div>
-								</Table.Cell>
-							</Table.Row>
-							<Table.Row>
-								<Table.Cell>Item Name</Table.Cell>
-								<Table.Cell>
-									<div className="ui transparent input">
-										<input type="text" placeholder="0"/>
-									</div>
-								</Table.Cell>
-							</Table.Row>
+							{entries}
 						</Table.Body>
 					</Table>
 				</div>	
