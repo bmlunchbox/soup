@@ -11,6 +11,7 @@ class Navbar extends Component {
           <li><a href="/menu">Create Menu</a></li>
           <li><a href="/recipe">Recipes</a></li>
           <li><a href="/inventory">Inventory</a></li>
+          <li><a href="/donor">Donor</a></li>
           <li><a href="/about">About</a></li>
         </nav>
       </header>

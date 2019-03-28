@@ -10,6 +10,7 @@ import Recipe from '../src/pages/recipe/RecipePage';
 import NotFound from '../src/pages/notfound/notfound';
 import Inventory from '../src/pages/inventory/inventory';
 import Menu from '../src/pages/menu/menu';
+import Donor from '../src/pages/donor/donor';
 
 const browserHistory = createBrowserHistory();
 
@@ -25,6 +26,7 @@ export default class App extends Component {
                             <Route path="/recipe" component={Recipe}/>
                             <Route path="/menu" component={Menu}/>
                             <Route path="/inventory" component={Inventory}/>
+                            <Route path="/donor" component={Donor}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </div>
