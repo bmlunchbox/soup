@@ -4,6 +4,16 @@ import RecipeInput from './RecipeInput';
 import RecipeList from './RecipeList';
 import './RecipePage.css';
 
+const formStyle = {
+  content: {
+    top: 'auto',
+    left: 'auto',
+    right: 'auto',
+    left: 'auto',
+    transform: 'translate(76%, -50%)'
+  }
+}
+
 Modal.setAppElement('#root');
 
 class RecipePage extends Component {
@@ -78,7 +88,10 @@ class RecipePage extends Component {
       <div>
         <button className="button-save" onClick={this.handleOpenModal}>Add New</button>
         <h2 className="title">Recipes</h2>
-        <Modal isOpen={this.state.showForm}>
+        <Modal 
+          isOpen={this.state.showForm}
+          style={formStyle}
+        >
           <RecipeInput 
             onSave={this.handleSave} 
             onClose={this.handleCloseModal}

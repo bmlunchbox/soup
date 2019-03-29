@@ -1,0 +1,18 @@
+label{
+	font-size: 1.5em;
+}
+
+.close-button{
+	width: 10%;
+	float: right;
+}
+
+.inventory-form{
+	background: #f2f2f2;
+	padding: 10px 20px 50px 20px;
+}
+
+.save-button{
+	width: 75px;
+	float: right;
+}

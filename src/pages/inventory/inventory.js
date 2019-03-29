@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Modal } from 'semantic-ui-react';
+import InventoryForm from './form';
 import './inventory.css';
 
 const RowEntry = ({item, stock}) => {
@@ -8,7 +9,7 @@ const RowEntry = ({item, stock}) => {
 			<Table.Cell>{item}</Table.Cell>
 			<Table.Cell>
 				<div className="ui transparent input">
-					<input type="text" placeholder={stock}/>
+					<input type="text" defaultValue={stock}/>
 				</div>
 			</Table.Cell>
 		</Table.Row>
@@ -36,20 +37,56 @@ class Inventory extends Component {
 					stock: 0
 				}
 			],
-			nextId: 3
+			nextId: 3,
+			showForm: false
 		};
+
+		this.handleOpenModal = this.handleOpenModal.bind(this);
+		this.handleCloseModal = this.handleCloseModal.bind(this);
+		this.handleSave = this.handleSave.bind(this);
+	}
+
+	handleOpenModal(){
+		this.setState({showForm: true});
+	}
+
+	handleCloseModal(){
+		this.setState({showForm: false});
+	}
+
+	handleSave(inventory){
+		this.setState((prevState, props) => {
+			const newInventory = {...inventory, id: this.state.nextId};
+			return {
+				nextId: prevState.nextId + 1,
+				inventory: [...this.state.inventory, newInventory],
+				showForm: false
+			}
+		});
 	}
 
 	render(){
 		const entries = this.state.inventory.map((elem) => (
 			<RowEntry key={elem.id} {...elem}/>
 		));
+		const {showForm} = this.state;
 
 		return(
 			<div className="container">
-				<div>
-					<button className="button-inventory">Add Item</button>
-				</div>
+				
+				<Modal
+					trigger={<div><button className="button-inventory" onClick={this.handleOpenModal}>Add Item</button></div>}
+					centered={true}
+					open={this.state.showForm}
+					onClose={this.handleCloseModal}
+					basic
+					size='mini'
+				>
+					<InventoryForm
+						onSave={this.handleSave}
+						onClose={this.handleCloseModal}
+					/>
+				</Modal>
 				<h2 className="title">Inventory</h2>
 				<div className="table-container">
 					<Table celled className="ui table">
