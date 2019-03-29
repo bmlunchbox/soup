@@ -3,7 +3,7 @@ import { Table, Modal } from 'semantic-ui-react';
 import InventoryForm from './form';
 import './inventory.css';
 
-const RowEntry = ({item, stock}) => {
+const RowEntry = ({item, stock, restriction}) => {
 	return(
 		<Table.Row>
 			<Table.Cell>{item}</Table.Cell>
@@ -12,6 +12,7 @@ const RowEntry = ({item, stock}) => {
 					<input type="text" defaultValue={stock}/>
 				</div>
 			</Table.Cell>
+			<Table.Cell>{restriction}</Table.Cell>
 		</Table.Row>
 	);
 }
@@ -20,21 +21,26 @@ class Inventory extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
+			restriction: ["nuts", "fish", "fruit"],
 			inventory: [
 				{
 					id: 0,
 					item: "carrots",
-					stock: 1000
+					stock: 1000,
+					restriction: ""
 				},
 				{
 					id: 1,
 					item: "yes",
-					stock: 123
+					stock: 123, 
+					restriction: ""
+
 				},
 				{
 					id: 2,
 					item: "no",
-					stock: 0
+					stock: 0,
+					restriction: "nuts"
 				}
 			],
 			nextId: 3,
@@ -69,7 +75,7 @@ class Inventory extends Component {
 		const entries = this.state.inventory.map((elem) => (
 			<RowEntry key={elem.id} {...elem}/>
 		));
-		const {showForm} = this.state;
+		const {restriction, showForm} = this.state;
 
 		return(
 			<div className="container">
@@ -83,6 +89,7 @@ class Inventory extends Component {
 					size='mini'
 				>
 					<InventoryForm
+						restriction={restriction}
 						onSave={this.handleSave}
 						onClose={this.handleCloseModal}
 					/>
@@ -92,8 +99,9 @@ class Inventory extends Component {
 					<Table celled className="ui table">
 						<Table.Header>
 							<Table.Row>
-								<Table.HeaderCell className="twelve wide" textAlign='center'>Item</Table.HeaderCell>
-								<Table.HeaderCell className="four wide" textAlign='center'>Stock</Table.HeaderCell>
+								<Table.HeaderCell className="ten wide" textAlign='center'>Item</Table.HeaderCell>
+								<Table.HeaderCell className="three wide" textAlign='center'>Stock</Table.HeaderCell>
+								<Table.HeaderCell className="three wide" textAlign='center'>Restriction</Table.HeaderCell>
 							</Table.Row>
 						</Table.Header>
 

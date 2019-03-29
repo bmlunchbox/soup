@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Dropdown, Button, Form } from 'semantic-ui-react';
 import './form.css';
 
 class InventoryForm extends Component {
@@ -12,15 +12,21 @@ class InventoryForm extends Component {
 		super(props);
 		this.state = {
 			item: '',
-			stock: ''
+			stock: '',
+			restriction: ''
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleDropdownChange = this.handleDropdownChange.bind(this);
 	}
 
 	handleChange(e) {
 		this.setState({[e.target.name]: e.target.value});
+	}
+
+	handleDropdownChange = (e, {value}) => {
+		this.setState({restriction: value});
 	}
 
 	handleSubmit(e){
@@ -28,13 +34,22 @@ class InventoryForm extends Component {
 		this.props.onSave({...this.state});
 		this.setState({
 			item: '',
-			stock: ''
+			stock: '',
+			restriction: ''
 		});
 	}
 
 	render() {
 		const {item, stock} = this.state;
-		const {onClose} = this.props;
+		const {restriction, onClose} = this.props;
+
+		const restrictOptions = restriction.map((restriction) => (
+			{
+				key: restriction,
+				text: restriction,
+				value: restriction
+			}
+		));
 
 		return(
 			<Form className="inventory-form" onSubmit={this.handleSubmit}>
@@ -49,6 +64,13 @@ class InventoryForm extends Component {
 				<Form.Field>
 					<label>Stock</label>
 					<input name="stock" defaultValue="0" value={stock} placeholder="0" onChange={this.handleChange}/>
+				</Form.Field>
+				<Form.Field>
+					<label>Restriction</label>
+					<Dropdown
+						placeholder="Restriction" fluid selection
+						options={restrictOptions} onChange={this.handleDropdownChange}
+					/>
 				</Form.Field>
 				<Button className="save-button" color="green" type="submit">Save</Button>
 			</Form>
