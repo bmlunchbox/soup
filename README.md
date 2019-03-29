@@ -18,3 +18,8 @@ You will also see any lint errors in the console.
 
 Runs the above npm start script and the server script.<br>
 The web server will run on [http://localhost:5000](http://localhost:5000).
+
+### `npm run server`
+
+Runs the server. Make sure to start the AWS RDS instance <br>
+and shut it down when done.

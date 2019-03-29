@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Modal } from 'semantic-ui-react';
+import DonationForm from './addDonation';
+import DonorForm from './addDonor';
 import './donor.css';
 
 const RowEntry = ({date, donor, amount}) => {
@@ -16,6 +18,7 @@ class Donor extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
+			donors: ["Brandon", "Julian", "Victoria", "Maylene"],
 			donations: [
 				{
 					id: 0,
@@ -37,11 +40,35 @@ class Donor extends Component {
 				}
 			],
 			nextId: 3,
-			showForm: false
+			showDonationForm: false,
+			showDonorForm: false
 		};
+
+		this.handleOpenDonation = this.handleOpenDonation.bind(this);
+		this.handleOpenDonor = this.handleOpenDonor.bind(this);
+		this.handleCloseDonation = this.handleCloseDonation.bind(this);
+		this.handleCloseDonor = this.handleCloseDonor.bind(this);
+	}
+
+
+	handleOpenDonation(){
+		this.setState({showDonationForm: true});
+	}
+
+	handleOpenDonor(){
+		this.setState({showDonorForm: true});
+	}
+
+	handleCloseDonation(){
+		this.setState({showDonationForm: false});
+	}
+
+	handleCloseDonor(){
+		this.setState({showDonorForm: false});
 	}
 
 	render(){
+		const {donors} = this.state;
 		const entries = this.state.donations.map((elem) =>(
 			<RowEntry key={elem.id} {...elem}/>
 		));
@@ -49,8 +76,24 @@ class Donor extends Component {
 		return(
 			<div className="container">
 				<div>
-					<button className="button-add">Add Donor</button>
-					<button className="button-add">Add Donation</button>
+					<Modal 
+						trigger={<button className="button-add" onClick={this.handleOpenDonor}>Add Donor</button>}
+						centered={true}
+						open={this.state.showDonorForm}
+						basic
+						size='mini'
+					>
+						<DonorForm onClose={this.handleCloseDonor}/>
+					</Modal>
+					<Modal
+						trigger={<button className="button-add" onClick={this.handleOpenDonation}>Add Donation</button>}
+						centered={true}
+						open={this.state.showDonationForm}
+						basic
+						size='mini'
+					>
+						<DonationForm donors={donors} onClose={this.handleCloseDonation}/>
+					</Modal>
 				</div>
 				<button className="button-donor">View Summary</button>
 				<h2 className="title">Donations</h2>
