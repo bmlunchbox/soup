@@ -24,19 +24,19 @@ class Donor extends Component {
 					id: 0,
 					date: "mar 3, 2019",
 					donor: "brandon",
-					amount: "$1"
+					amount: "1"
 				},
 				{
 					id: 1,
 					date: "mar 28, 2019",
 					donor: "brandon",
-					amount: "$3"
+					amount: "3"
 				},
 				{
 					id: 2,
 					date: "mar 31, 2018",
 					donor: "aaaaaaaaaaaaaaa",
-					amount: "$123"
+					amount: "123"
 				}
 			],
 			nextId: 3,
@@ -48,8 +48,10 @@ class Donor extends Component {
 		this.handleOpenDonor = this.handleOpenDonor.bind(this);
 		this.handleCloseDonation = this.handleCloseDonation.bind(this);
 		this.handleCloseDonor = this.handleCloseDonor.bind(this);
-	}
 
+		this.handleSaveDonor = this.handleSaveDonor.bind(this);
+		this.handleSaveDonation = this.handleSaveDonation.bind(this);
+	}
 
 	handleOpenDonation(){
 		this.setState({showDonationForm: true});
@@ -67,12 +69,34 @@ class Donor extends Component {
 		this.setState({showDonorForm: false});
 	}
 
+	handleSaveDonor(donor){
+		this.setState((prevState, props) => {
+			return {
+				donors: [...this.state.donors, donor.name],
+				showDonorForm: false
+			}
+		});
+	}
+
+	handleSaveDonation(donation){
+		this.setState((prevState, props) => {
+			const newDonation ={...donation, id: this.state.nextId};
+			return {
+				nextId: prevState.nextId + 1,
+				donations: [...this.state.donations, newDonation],
+				showDonationForm: false
+			}
+		});
+	}
+
 	render(){
 		const {donors} = this.state;
 		const entries = this.state.donations.map((elem) =>(
 			<RowEntry key={elem.id} {...elem}/>
 		));
 
+		// summary of donations and donors if there's time to implement
+		// <button className="button-donor">View Summary</button>
 		return(
 			<div className="container">
 				<div>
@@ -83,7 +107,7 @@ class Donor extends Component {
 						basic
 						size='mini'
 					>
-						<DonorForm onClose={this.handleCloseDonor}/>
+						<DonorForm onClose={this.handleCloseDonor} onSave={this.handleSaveDonor}/>
 					</Modal>
 					<Modal
 						trigger={<button className="button-add" onClick={this.handleOpenDonation}>Add Donation</button>}
@@ -92,10 +116,9 @@ class Donor extends Component {
 						basic
 						size='mini'
 					>
-						<DonationForm donors={donors} onClose={this.handleCloseDonation}/>
+						<DonationForm donors={donors} onClose={this.handleCloseDonation} onSave={this.handleSaveDonation}/>
 					</Modal>
 				</div>
-				<button className="button-donor">View Summary</button>
 				<h2 className="title">Donations</h2>
 				<div className="table-container">
 					<Table celled className="ui table">
@@ -103,7 +126,7 @@ class Donor extends Component {
 							<Table.Row>
 								<Table.HeaderCell className="six wide" textAlign='center'>Date</Table.HeaderCell>
 								<Table.HeaderCell className="six wide" textAlign='center'>Donor</Table.HeaderCell>
-								<Table.HeaderCell className="four wide" textAlign='center'>Amount</Table.HeaderCell>
+								<Table.HeaderCell className="four wide" textAlign='center'>Amount ($)</Table.HeaderCell>
 							</Table.Row>
 						</Table.Header>
 

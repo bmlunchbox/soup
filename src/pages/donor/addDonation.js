@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Dropdown, Button, Form } from 'semantic-ui-react';
 import './addDonation.css';
 
 class DonationForm extends Component {
@@ -10,25 +10,34 @@ class DonationForm extends Component {
 
 	constructor(props) {
 		super(props);
+		var date = new Date();
 		this.state = {
-			donorName: '',
-			amount: ''
+			donor: '',
+			amount: '',
+			date: date.toDateString()
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleDropdownChange = this.handleDropdownChange.bind(this);
 	}
 
 	handleChange(e) {
 		this.setState({[e.target.name]: e.target.value});
 	}
 
+	handleDropdownChange = (e, {value}) => {
+		this.setState({donor: value})
+	}
+
 	handleSubmit(e){
 		e.preventDefault();
 		this.props.onSave({...this.state});
+		var date = new Date();
 		this.setState({
-			donorName: '',
-			stock: ''
+			donor: '',
+			amount: '',
+			date: date.toDateString()
 		});
 	}
 
@@ -38,13 +47,11 @@ class DonationForm extends Component {
 
 		const donorOptions = donors.map((donor) => (
 			{
-				key: {donor},
-				text: {donor},
-				value: {donor}
+				key: donor,
+				text: donor,
+				value: donor
 			}
 		));
-
-		console.log(donorOptions);
 
 		return(
 			<Form className="donation-form" onSubmit={this.handleSubmit}>
@@ -54,7 +61,10 @@ class DonationForm extends Component {
 				>x</button>
 				<Form.Field>
 					<label>Donor</label>
-					<input name="donorName" placeholder="Donor" value={donorName} onChange={this.handleChange}/>
+					<Dropdown
+						placeholder="Donor Name" fluid selection
+						options={donorOptions} onChange={this.handleDropdownChange}
+					/>
 				</Form.Field>
 				<Form.Field>
 					<label>Amount</label>
