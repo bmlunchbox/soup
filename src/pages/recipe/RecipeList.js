@@ -4,9 +4,8 @@ import './RecipeList.css';
 
 class RecipeList extends Component {
   render() {
-    const {onDelete} = this.props;
     const recipes = this.props.recipes.map((r,index) => (
-      <Recipe key={r.id} {...r} onDelete={onDelete} recipes={r} />
+      <Recipe key={r.id} {...r} recipes={r} />
     ));
     
     return (

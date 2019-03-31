@@ -43,7 +43,6 @@ class RecipePage extends Component {
     }
     
     this.handleSave = this.handleSave.bind(this);
-    this.onDelete = this.onDelete.bind(this);
     this.handleOpenModal = this.handleOpenModal.bind(this);
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
@@ -67,11 +66,6 @@ class RecipePage extends Component {
     });
   }
   
-  onDelete(id) {
-    const recipes = this.state.recipes.filter(r => r.id !== id);
-    this.setState({recipes});
-  }
-  
   render() {
     const {showForm, inventory} = this.state;
     return (
@@ -90,7 +84,7 @@ class RecipePage extends Component {
           />
         </Modal>     
         <h2 className="title">Recipes</h2>
-        <RecipeList onDelete={this.onDelete} recipes={this.state.recipes} />
+        <RecipeList recipes={this.state.recipes} />
       </div>
     );
   }

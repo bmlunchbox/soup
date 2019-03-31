@@ -3,13 +3,12 @@ import './Recipe.css';
 
 class Recipe extends Component {
   render() {
-    const {title, img, instructions, id, onDelete, portions} = this.props;
+    const {title, img, instructions, id, portions} = this.props;
     const ingredients = this.props.ingredients.map((ing, index) => (
       <li key={index}>{ing.amount} {ing.item}</li> 
     ));
     return (
       <div className="recipe-card">
-        <div className="remove" onClick={() => onDelete(id)}>x</div>
         <div className="recipe-card-img">
           <img src={img} alt={title} href="" />
         </div>
