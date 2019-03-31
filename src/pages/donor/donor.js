@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Table, Modal } from 'semantic-ui-react';
 import DonationForm from './addDonation';
 import DonorForm from './addDonor';
+import * as apiCalls from "../apis/donor";
 import './donor.css';
 
 const RowEntry = ({date, donor, amount}) => {
@@ -18,27 +19,8 @@ class Donor extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			donors: ["Brandon", "Julian", "Victoria", "Maylene"],
-			donations: [
-				{
-					id: 0,
-					date: "mar 3, 2019",
-					donor: "brandon",
-					amount: "1"
-				},
-				{
-					id: 1,
-					date: "mar 28, 2019",
-					donor: "brandon",
-					amount: "3"
-				},
-				{
-					id: 2,
-					date: "mar 31, 2018",
-					donor: "aaaaaaaaaaaaaaa",
-					amount: "123"
-				}
-			],
+			donors: [],
+			donations: [],
 			nextId: 3,
 			showDonationForm: false,
 			showDonorForm: false
@@ -70,16 +52,21 @@ class Donor extends Component {
 	}
 
 	handleSaveDonor(donor){
+		console.log(donor);
+		// save it here and get donor_id
 		this.setState((prevState, props) => {
 			return {
-				donors: [...this.state.donors, donor.name],
+				// get the donor_id as a response
+				donors: [...this.state.donors, {name: donor.name}],
 				showDonorForm: false
 			}
 		});
 	}
 
 	handleSaveDonation(donation){
+		console.log(donation);
 		this.setState((prevState, props) => {
+			// get donation id as a response
 			const newDonation ={...donation, id: this.state.nextId};
 			return {
 				nextId: prevState.nextId + 1,
@@ -87,6 +74,39 @@ class Donor extends Component {
 				showDonationForm: false
 			}
 		});
+	}
+
+	async loadDonations(){
+		let response = await apiCalls.getDonations();
+		if (response.status === 200 && response.response){
+			const donations = response.response.map((entry) => (
+				{
+					id: entry.donation_id,
+					date: new Date(entry.date).toDateString(),
+					donor: entry.name,
+					amount: entry.amount
+				}
+			));
+			this.setState({donations});
+		} 
+	}
+
+	async loadDonors(){
+		let response = await apiCalls.getDonors();
+		if (response.status === 200 && response.response){
+			const donors = response.response.map((entry) => (
+				{
+					donor_id: entry.donor_id,
+					name: entry.name
+				}
+			));
+			this.setState({donors});
+		}
+	}
+
+	componentWillMount(){
+		this.loadDonations();
+		this.loadDonors();
 	}
 
 	render(){

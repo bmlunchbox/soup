@@ -13,6 +13,7 @@ class DonationForm extends Component {
 		var date = new Date();
 		this.state = {
 			donor: '',
+			donor_id: '',
 			amount: '',
 			date: date.toDateString()
 		};
@@ -26,8 +27,14 @@ class DonationForm extends Component {
 		this.setState({[e.target.name]: e.target.value});
 	}
 
-	handleDropdownChange = (e, {value}) => {
-		this.setState({donor: value})
+	handleDropdownChange (e, data){
+		var key = '';
+		var id = data.options.filter(function(item) {
+			if (item.value === data.value){
+				key = item.key
+			}
+		})
+		this.setState({donor: data.value, donor_id: key})
 	}
 
 	handleSubmit(e){
@@ -36,6 +43,7 @@ class DonationForm extends Component {
 		var date = new Date();
 		this.setState({
 			donor: '',
+			donor_id: '',
 			amount: '',
 			date: date.toDateString()
 		});
@@ -47,9 +55,9 @@ class DonationForm extends Component {
 
 		const donorOptions = donors.map((donor) => (
 			{
-				key: donor,
-				text: donor,
-				value: donor
+				key: donor.donor_id,
+				text: donor.name,
+				value: donor.name
 			}
 		));
 
