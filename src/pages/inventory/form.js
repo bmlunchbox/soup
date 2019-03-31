@@ -12,8 +12,9 @@ class InventoryForm extends Component {
 		super(props);
 		this.state = {
 			item: '',
-			stock: '',
-			restriction: ''
+			stock: 0,
+			restriction: '',
+			restriction_id: ''
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -25,8 +26,14 @@ class InventoryForm extends Component {
 		this.setState({[e.target.name]: e.target.value});
 	}
 
-	handleDropdownChange = (e, {value}) => {
-		this.setState({restriction: value});
+	handleDropdownChange(e, data){
+		var key = ''
+		var id = data.options.filter(function(item) {
+			if (item.value === data.value){
+				key = item.key
+			}
+		})
+		this.setState({restriction: data.value, restriction_id: key});
 	}
 
 	handleSubmit(e){
@@ -34,8 +41,9 @@ class InventoryForm extends Component {
 		this.props.onSave({...this.state});
 		this.setState({
 			item: '',
-			stock: '',
-			restriction: ''
+			stock: 0,
+			restriction: '',
+			restriction_id: ''
 		});
 	}
 
@@ -45,9 +53,9 @@ class InventoryForm extends Component {
 
 		const restrictOptions = restriction.map((restriction) => (
 			{
-				key: restriction,
-				text: restriction,
-				value: restriction
+				key: restriction.id,
+				text: restriction.description,
+				value: restriction.description
 			}
 		));
 
@@ -63,7 +71,7 @@ class InventoryForm extends Component {
 				</Form.Field>
 				<Form.Field>
 					<label>Stock</label>
-					<input name="stock" defaultValue="0" value={stock} placeholder="0" onChange={this.handleChange}/>
+					<input name="stock" type="number" min="0" value={stock} placeholder="0" onChange={this.handleChange}/>
 				</Form.Field>
 				<Form.Field>
 					<label>Restriction</label>

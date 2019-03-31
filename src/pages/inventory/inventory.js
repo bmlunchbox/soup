@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Table, Modal } from 'semantic-ui-react';
 import InventoryForm from './form';
+import * as apiCalls from "../apis/inventory";
 import './inventory.css';
 
 const RowEntry = ({item, stock, restriction}) => {
@@ -9,7 +10,7 @@ const RowEntry = ({item, stock, restriction}) => {
 			<Table.Cell>{item}</Table.Cell>
 			<Table.Cell>
 				<div className="ui transparent input">
-					<input type="text" defaultValue={stock}/>
+					<input type="number" min="0" defaultValue={stock}/>
 				</div>
 			</Table.Cell>
 			<Table.Cell>{restriction}</Table.Cell>
@@ -21,35 +22,47 @@ class Inventory extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			restriction: ["nuts", "fish", "fruit"],
-			inventory: [
-				{
-					id: 0,
-					item: "carrots",
-					stock: 1000,
-					restriction: ""
-				},
-				{
-					id: 1,
-					item: "yes",
-					stock: 123, 
-					restriction: ""
-
-				},
-				{
-					id: 2,
-					item: "no",
-					stock: 0,
-					restriction: "nuts"
-				}
-			],
-			nextId: 3,
+			restriction: [],
+			inventory: [],
 			showForm: false
 		};
 
 		this.handleOpenModal = this.handleOpenModal.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.handleSave = this.handleSave.bind(this);
+	}
+
+	async loadInventory(){
+		let response = await apiCalls.getInventory();
+		if (response.status === 200 && response.response) {
+			const inventory = response.response.map((entry) => (
+				{
+					id: entry.name,
+					item: entry.name,
+					stock: entry.stock,
+					restriction: entry.description
+				}
+			));
+			this.setState({inventory});	
+		}
+	}
+
+	async loadRestrictions(){
+		let response = await apiCalls.getRestrictions();
+		if (response.status === 200 && response.response) {
+			const restriction = response.response.map((entry) => (
+				{
+					id: entry.restriction_id,
+					description: entry.description
+				}
+			));
+			this.setState({restriction});
+		}
+	}
+
+	componentWillMount(){
+		this.loadRestrictions();
+		this.loadInventory();
 	}
 
 	handleOpenModal(){
@@ -60,11 +73,16 @@ class Inventory extends Component {
 		this.setState({showForm: false});
 	}
 
-	handleSave(inventory){
+	async handleSave(inventory){
+		const api_obj = {
+			item: inventory.item,
+			restriction_id: inventory.restriction_id,
+			stock: inventory.stock
+		};
+		await apiCalls.addInventory(api_obj);
 		this.setState((prevState, props) => {
-			const newInventory = {...inventory, id: this.state.nextId};
+			const newInventory = {...inventory, id: inventory.item};
 			return {
-				nextId: prevState.nextId + 1,
 				inventory: [...this.state.inventory, newInventory],
 				showForm: false
 			}

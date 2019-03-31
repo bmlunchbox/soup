@@ -12,7 +12,7 @@
 }
 
 .portion-target-input{
-	width: 7vw;
+	width: 8vw;
 	max-width: 10vw;
 	display: inline;
 }
@@ -24,7 +24,7 @@
 
 .menu-table{
 	width: 50vw;
-	margin: 30px 5vw 40px 5vw;
+	margin: 30px 0 40px 10vw;
 	float: left;
 }
 
