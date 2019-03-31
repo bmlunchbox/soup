@@ -11,4 +11,14 @@ router.get('/', function(req, res, next){
 	})
 });
 
+// add new donor
+router.post('/', function(req, res){
+	sqlQuery = "INSERT INTO `new_schema`.`donor` (`name`, `address`, `email`, `cell`) VALUES ('"+ req.body.name + "', '" + req.body.address + "', '" + req.body.email + "', '" + req.body.phone + "');";
+	db.query(sqlQuery,
+		function(err, result){
+			if (err) throw err;
+			res.send(result);
+		})
+});
+
 module.exports = router;

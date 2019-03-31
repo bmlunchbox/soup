@@ -21,7 +21,6 @@ class Donor extends Component {
 		this.state = {
 			donors: [],
 			donations: [],
-			nextId: 3,
 			showDonationForm: false,
 			showDonorForm: false
 		};
@@ -51,25 +50,23 @@ class Donor extends Component {
 		this.setState({showDonorForm: false});
 	}
 
-	handleSaveDonor(donor){
-		console.log(donor);
-		// save it here and get donor_id
+	async handleSaveDonor(donor){
+		let response = await apiCalls.addDonor(donor);
+		var newId = response.insertId;
 		this.setState((prevState, props) => {
 			return {
-				// get the donor_id as a response
-				donors: [...this.state.donors, {name: donor.name}],
+				donors: [...this.state.donors, {name: donor.name, donor_id: newId}],
 				showDonorForm: false
 			}
 		});
 	}
 
-	handleSaveDonation(donation){
-		console.log(donation);
+	async handleSaveDonation(donation){
+		let response = await apiCalls.addDonation(donation);
+		var newId = response.insertId;
 		this.setState((prevState, props) => {
-			// get donation id as a response
-			const newDonation ={...donation, id: this.state.nextId};
+			const newDonation ={...donation, id: newId};
 			return {
-				nextId: prevState.nextId + 1,
 				donations: [...this.state.donations, newDonation],
 				showDonationForm: false
 			}
@@ -78,11 +75,12 @@ class Donor extends Component {
 
 	async loadDonations(){
 		let response = await apiCalls.getDonations();
+		console.log(response);
 		if (response.status === 200 && response.response){
 			const donations = response.response.map((entry) => (
 				{
 					id: entry.donation_id,
-					date: new Date(entry.date).toDateString(),
+					date: entry.date,
 					donor: entry.name,
 					amount: entry.amount
 				}
