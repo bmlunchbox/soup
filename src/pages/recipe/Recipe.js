@@ -3,9 +3,9 @@ import './Recipe.css';
 
 class Recipe extends Component {
   render() {
-    const {title, img, instructions, id, onDelete} = this.props;
+    const {title, img, instructions, id, onDelete, portions} = this.props;
     const ingredients = this.props.ingredients.map((ing, index) => (
-      <li key={index}>{ing}</li> 
+      <li key={index}>{ing.amount} {ing.item}</li> 
     ));
     return (
       <div className="recipe-card">
@@ -21,6 +21,7 @@ class Recipe extends Component {
           </ul>
           <h4>Instructions:</h4>
           <p>{instructions}</p>
+          <p><b>Serves: </b>{portions}</p>
         </div>
       </div>
     );

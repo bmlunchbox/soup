@@ -1,0 +1,33 @@
+. instruction-field {
+	min-height: 100;
+}
+
+.recipe-form{
+	background: #f2f2f2;
+	padding: 10px 20px 50px 20px;
+}
+
+.close-button{
+	width: 10%;
+	float: right;
+}
+
+.recipe-form-line {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	margin-top: 5px;
+}
+
+.more-button {
+	cursor: pointer;
+	color: white;
+	background-color: steelblue;
+	border-color: steelblue;
+	border-radius: 6px;
+	padding: 0 10px 1px 10px;
+	margin: 8px 0;
+	font-size: 1.1em;
+	float: right;
+}

@@ -5,6 +5,8 @@ label{
 .close-button{
 	width: 10%;
 	float: right;
+	background: none;
+	border: none;
 }
 
 .donation-form{

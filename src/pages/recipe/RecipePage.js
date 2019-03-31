@@ -1,31 +1,20 @@
 import React, { Component } from 'react';
-import Modal from 'react-modal';
-import RecipeInput from './RecipeInput';
+import { Modal } from 'semantic-ui-react';
+import RecipeForm from './recipeform';
 import RecipeList from './RecipeList';
 import './RecipePage.css';
-
-const formStyle = {
-  content: {
-    top: 'auto',
-    left: 'auto',
-    right: 'auto',
-    left: 'auto',
-    transform: 'translate(76%, -50%)'
-  }
-}
-
-Modal.setAppElement('#root');
 
 class RecipePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      inventory: ["pasta", "water", "tomato", "spaghetti", "slice of bread", "scoops ice cream", "milk"],
       recipes: [
         {
           id: 0,
           title: "Spaghetti",
           instructions: "Open jar of Spaghetti sauce.  Bring to simmer.  Boil water.  Cook pasta until done.  Combine pasta and sauce",
-          ingredients: ["pasta", "8 cups water", "1 box spaghetti"],
+          ingredients: [{item: "pasta", amount: 2}, {item: "spaghetti", amount: 3}],
           img: "https://images.unsplash.com/photo-1548247661-3d7905940716?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1053&q=80",
           dietary: ["nuts", "halal"],
           portions: 10
@@ -34,7 +23,7 @@ class RecipePage extends Component {
           id: 1,
           title: "Milkshake",
           instructions: "Combine ice cream and milk.  Blend until creamy",
-          ingredients: ["2 Scoops Ice cream", "8 ounces milk"],
+          ingredients: [{item: "scoops ice cream", amount: 4}, {item: "milk", amount: 2}],
           img: "https://images.unsplash.com/photo-1541658016709-82535e94bc69?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
           dietary: ["nuts"],
           portions: 10
@@ -43,8 +32,9 @@ class RecipePage extends Component {
           id: 2,
           title: "Avocado Toast",
           instructions: "Toast bread.  Slice avocado and spread on bread.  Add salt, oil, and pepper to taste.",
-          ingredients: ["2 slices of bread", "1 avocado", "1 tablespoon olive oil", "1 pinch of salt", "pepper"],
+          ingredients: [{item: "slice of bread", amount: 3}],
           img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1053&q=80",
+          dietary: '',
           portions: 5
         }
       ],
@@ -83,20 +73,23 @@ class RecipePage extends Component {
   }
   
   render() {
-    const {showForm} = this.state;
+    const {showForm, inventory} = this.state;
     return (
       <div>
-        <button className="button-save" onClick={this.handleOpenModal}>Add New</button>
-        <h2 className="title">Recipes</h2>
         <Modal 
-          isOpen={this.state.showForm}
-          style={formStyle}
+          trigger={<button className="button-save" onClick={this.handleOpenModal}>Add New</button>}
+          centered={true}
+          open={this.state.showForm}
+          basic
+          size='mini'
         >
-          <RecipeInput 
+          <RecipeForm
+            inventory={inventory}
             onSave={this.handleSave} 
             onClose={this.handleCloseModal}
           />
-        </Modal>        
+        </Modal>     
+        <h2 className="title">Recipes</h2>
         <RecipeList onDelete={this.onDelete} recipes={this.state.recipes} />
       </div>
     );
