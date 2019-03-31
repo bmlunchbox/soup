@@ -4,13 +4,13 @@ import InventoryForm from './form';
 import * as apiCalls from "../apis/inventory";
 import './inventory.css';
 
-const RowEntry = ({item, stock, restriction}) => {
+const RowEntry = ({item, stock, restriction, handleUpdate}) => {
 	return(
 		<Table.Row>
 			<Table.Cell>{item}</Table.Cell>
 			<Table.Cell>
 				<div className="ui transparent input">
-					<input type="number" min="0" defaultValue={stock}/>
+					<input name={item} type="number" min="0" defaultValue={stock} onChange={handleUpdate}/>
 				</div>
 			</Table.Cell>
 			<Table.Cell>{restriction}</Table.Cell>
@@ -30,6 +30,7 @@ class Inventory extends Component {
 		this.handleOpenModal = this.handleOpenModal.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.handleSave = this.handleSave.bind(this);
+		this.handleUpdate = this.handleUpdate.bind(this);
 	}
 
 	async loadInventory(){
@@ -65,6 +66,11 @@ class Inventory extends Component {
 		this.loadInventory();
 	}
 
+	async handleUpdate(e){
+		e.preventDefault();
+		await apiCalls.updateInventory({name: e.target.name, stock: e.target.value});
+	}
+
 	handleOpenModal(){
 		this.setState({showForm: true});
 	}
@@ -91,7 +97,7 @@ class Inventory extends Component {
 
 	render(){
 		const entries = this.state.inventory.map((elem) => (
-			<RowEntry key={elem.id} {...elem}/>
+			<RowEntry key={elem.id} {...elem} handleUpdate={this.handleUpdate}/>
 		));
 		const {restriction, showForm} = this.state;
 

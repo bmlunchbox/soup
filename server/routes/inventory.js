@@ -11,7 +11,6 @@ router.get('/', function(req, res, next){
 	})
 });
 
-
 router.post('/', function(req, res){
 	name = req.body.item;
 	stock = req.body.stock;
@@ -20,17 +19,19 @@ router.post('/', function(req, res){
 	db.query(sqlQuery,
 		function(err, result){
 			if (err) throw err;
-			res.send(JSON.stringify({"status": 200, "error":null, "response":"inserted"}));
+			res.send(JSON.stringify({"status": 201, "error": null, "response": "inserted"}));
 		})
 });
-/*
-router.put('/:itemName', function(req, res){
-	db.query("UPDATE `new_schema`.`food_items` SET `stock`='" + req.body.stockValue + "' WHERE `name`='" + req.itemName + "';", 
+
+router.put('/:item', function(req, res){
+	name = req.params.item;
+	stock = req.body.stock;
+	sqlQuery = "UPDATE `new_schema`.`food_items` SET `stock`='" + stock + "' WHERE `name`='" + name + "';";
+	db.query(sqlQuery, 
 		function (err, results){
 			if (err) throw err;
-			res.json(results);
+			res.send(JSON.stringify({"status": 200, "error": null, "response": "updated"}));
 	})
 });
 
-*/
 module.exports = router;
