@@ -10,6 +10,16 @@ class Menu extends Component {
 			recipe: [],
 			restrictions: []
 		};
+
+		this.loadRecipes = this.loadRecipes.bind(this);
+	}
+
+	loadRecipes(){
+
+	}
+
+	componentWillMount(){
+		this.loadRecipes();
 	}
 
 	render(){
@@ -32,6 +42,8 @@ class Menu extends Component {
 									<Table.HeaderCell className="four wide" textAlign='center'>Restriction</Table.HeaderCell>
 								</Table.Row>
 							</Table.Header>
+							<Table.Body>
+							</Table.Body>
 						</Table>
 					</div>
 					<div className="restriction-table">
@@ -42,6 +54,8 @@ class Menu extends Component {
 									<Table.HeaderCell className="six wide" textAlign='center'>Estimated</Table.HeaderCell>
 								</Table.Row>
 							</Table.Header>
+							<Table.Body>
+							</Table.Body>
 						</Table>
 					</div>
 					<Button>Reset</Button>
@@ -57,6 +71,8 @@ class Menu extends Component {
 								<Table.HeaderCell className="three wide" textAlign='center'>Portions</Table.HeaderCell>
 							</Table.Row>
 						</Table.Header>
+						<Table.Body>
+						</Table.Body>
 					</Table>
 				</div>
 			</div>

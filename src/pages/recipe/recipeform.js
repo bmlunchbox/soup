@@ -34,7 +34,6 @@ class RecipeForm extends Component {
 		const ingredients = this.state.ingredients.map((ing, i) => (
 			i === index ? {item: data.value, amount: ing.amount} : ing
 		));
-		console.log(ingredients);
 		this.setState({ingredients});
 	}
 

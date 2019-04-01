@@ -101,8 +101,7 @@ class RecipePage extends Component {
         amount: ingredient.amount,
         recipe_id: recipe_id
       }
-      console.log(ing_obj);
-      //await recipeAPI.addIngredient(ing_obj);
+      await recipeAPI.addIngredient(ing_obj);
     });
 
     this.setState((prevState, props) => {
