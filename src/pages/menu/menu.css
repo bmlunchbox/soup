@@ -7,6 +7,28 @@
 	padding-right: 20px;
 }
 
+.portions-cell{
+	display: inline;
+	width: 90%;
+}
+
+.portions-num {
+	width: 70%;
+	max-width: 70%;
+	padding: 0;
+	margin: 0;
+}
+
+.portions-button {
+	padding: auto auto;
+	margin-top: 7px;
+	float: right;
+	background: none;
+	border: none;
+	cursor: pointer;
+
+}
+
 .portion-container{
 	display: inline;
 }
@@ -38,4 +60,8 @@
 	width: 80vw;
 	margin: 0 auto;
 	float: center;
+}
+
+.smaller {
+	font-size: 0.8em;
 }

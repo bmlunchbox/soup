@@ -4,7 +4,7 @@ var express = require('express'),
 
 // get all inventory items
 router.get('/', function(req, res, next){
-	db.query("SELECT f.name, f.stock, d.description FROM new_schema.food_items f INNER JOIN new_schema.diet_restriction d ON f.restriction_id = d.restriction_id", 
+	db.query("SELECT f.name, f.stock, d.description FROM new_schema.food_items f LEFT JOIN new_schema.diet_restriction d ON f.restriction_id = d.restriction_id", 
 		function (err, results){
 			if (err) throw err;
 			res.send(JSON.stringify({"status": 200, "error": null, "response": results}));

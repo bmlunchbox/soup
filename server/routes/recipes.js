@@ -29,4 +29,13 @@ router.post('/ingredient', function(req, res){
 		})
 });
 
+// get all recipes for menu page
+router.get('/menu', function(req, res, next){
+	db.query("SELECT r.recipe_id, r.name, r.portion AS Serves, fi.name AS Ingredient, ri.quantity AS Required, d.description AS Restriction FROM new_schema.recipe r LEFT JOIN new_schema.recipe_ingredients ri ON r.recipe_id = ri.recipe_id LEFT JOIN new_schema.food_items fi ON fi.name = ri.name LEFT JOIN new_schema.diet_restriction d ON d.restriction_id = fi.restriction_id ORDER BY r.name DESC", 
+		function (err, results){
+			if (err) throw err;
+			res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+	})
+});
+
 module.exports = router;
