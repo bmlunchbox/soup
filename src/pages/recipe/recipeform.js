@@ -69,9 +69,9 @@ class RecipeForm extends Component {
 
 		const inventoryOptions = inventory.map((item) => (
 			{
-				key: item,
-				text: item,
-				value: item
+				key: item.id,
+				text: item.item,
+				value: item.item
 			}
 		));
 

@@ -1,6 +1,6 @@
 
-export async function getDonations() {
-	return fetch("/api/donation")
+export async function getRecipes() {
+	return fetch("/api/recipe")
 		.then(resp => {
 			if (!resp.ok){
 				if(resp.status >= 400 && resp.status < 500){
@@ -17,26 +17,8 @@ export async function getDonations() {
 		})
 }
 
-export async function getDonors() {
-	return fetch("/api/donor")
-		.then(resp => {
-			if (!resp.ok){
-				if(resp.status >= 400 && resp.status < 500){
-					return resp.json().then(data => {
-						let err = {errMessage: data.message};
-						throw err;
-					})
-				} else{
-					let err = {errMessage: "server not responding"};
-					throw err;
-				}
-			}
-			return resp.json();
-		})
-}
-
-export async function addDonor(val){
-	return fetch("/api/donor",{
+export async function addRecipe(val){
+	return fetch("/api/recipe",{
 			method: 'post',
 			headers: new Headers({
 				'Content-Type': 'application/json'
@@ -59,8 +41,8 @@ export async function addDonor(val){
 		})
 }
 
-export async function addDonation(val){
-	return fetch("/api/donation",{
+export async function addIngredient(val){
+	return fetch("/api/recipe/ingredient",{
 			method: 'post',
 			headers: new Headers({
 				'Content-Type': 'application/json'
