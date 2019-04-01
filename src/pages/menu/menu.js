@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import { Input, Table, Icon, Button, Form } from 'semantic-ui-react'; 
+import update from 'immutability-helper';
 import * as recipeAPI from "../apis/recipes";
 import * as inventoryAPI from "../apis/inventory";
 import './menu.css';
 
-const RecipeEntry = ({title, portion, restriction, handleSelectRecipe, handlePortionIncrement}) => {
+const RecipeEntry = ({identifier, title, portion, restriction, selected, handleSelectRecipe, handlePortionIncrement}) => {
 	return (
 		<Table.Row>
 			<Table.Cell>{title}</Table.Cell>
@@ -14,12 +15,14 @@ const RecipeEntry = ({title, portion, restriction, handleSelectRecipe, handlePor
 				<Form 
 					title={title}
 					restriction={restriction}
+					identifier={identifier}
 					onSubmit={handleSelectRecipe}>
 					<Form.Field className="portions-cell">
 						<input 
 						name={title}
 						className="portions-num" min={0} 
 						max={portion} type="number" 
+						value={selected}
 						onChange={handlePortionIncrement} />
 					</Form.Field>
 					<button 
@@ -37,14 +40,23 @@ const RecipeEntry = ({title, portion, restriction, handleSelectRecipe, handlePor
 	);
 }
 
-const RestrictionEntry = () => {
+const RestrictionEntry = ({description, quantity}) => {
 	return (
 		<Table.Row>
-			<Table.Cell></Table.Cell>
-			<Table.Cell></Table.Cell>
-			<Table.Cell></Table.Cell>
+			<Table.Cell>{description}</Table.Cell>
+			<Table.Cell>{quantity}</Table.Cell>
 		</Table.Row>
 	);
+}
+
+const MenuEntry = ({key, title, portion, restriction}) => {
+	return (
+		<Table.Row>
+			<Table.Cell>{title}</Table.Cell>
+			<Table.Cell>{portion}</Table.Cell>
+			<Table.Cell>{restriction}</Table.Cell>
+		</Table.Row>
+	)
 }
 
 class Menu extends Component {
@@ -72,7 +84,7 @@ class Menu extends Component {
 		var portion = e.target.value;
 		
 		let selected = this.state.selected.map((item) => {
-			return (item.recipe == recipe) ? {recipe: e.target.name, portions: e.target.value} : item;
+			return (item.recipe == recipe) ? {recipe: recipe, portions: e.target.value} : item;
 		});
 		
 		this.setState({selected});
@@ -83,6 +95,7 @@ class Menu extends Component {
 		var title = e.target.getAttribute("title");
 		var restriction = e.target.getAttribute("restriction");
 		var portion = 0;
+		var identifier = e.target.getAttribute("identifier");
 
 		this.state.selected.forEach((item) => {
 			if (item.recipe == title){
@@ -90,11 +103,90 @@ class Menu extends Component {
 			}
 		});
 
+		let selected = this.state.selected.map((item) => {
+			return (item.recipe == title) ? {recipe: title, portions: 0} : item;
+		});
 
-		// update selected 
+		this.setState({selected});
 		// update recipe available portions
 		// update selected items
-		console.log(title, restriction, portion);
+
+		const new_menu = {
+			id: identifier,
+			title: title,
+			restriction: restriction,
+			portion: portion
+		}
+		var in_menu = false;
+		this.state.menu.forEach((menuItem) => {
+			if (menuItem.title == title){
+				in_menu = true;
+			}
+		});
+		if (in_menu){
+			let menu = this.state.menu.map((item) => {
+				if (item.title == title){
+					var newPortion = Number(item.portion) + Number(portion);
+					var updated_menu = {
+						id: identifier,
+						title: title,
+						restriction: restriction,
+						portion: newPortion
+					}
+					return updated_menu;
+				} else{
+					return item;
+				}
+			});
+			this.setState({menu}, function() {
+				this.state.menu.forEach((menuItem) => {
+					this.state.recipes.forEach((recipeItem) => {
+						if (menuItem.id == recipeItem.id){
+							var portionMade = menuItem.portion;
+							var portion = recipeItem.portions;
+							var newInventory = {};
+
+							recipeItem.ingredients.forEach((ingredient) => {
+								var ingredientUsed = ingredient.item;
+								var amountUsed = Math.ceil((ingredient.amount/portion)*(portionMade));
+								var currentInventory = 0;
+								var amountLeft = this.state.inventory[ingredientUsed] - amountUsed;
+
+								newInventory = update(this.state.inventory, {[ingredientUsed]: {$set: amountLeft}});
+								this.setState({inventory: newInventory});
+							})
+						}
+					});
+				})
+			});
+		}
+		else {
+			this.setState(() => {
+				return {
+					menu: [...this.state.menu, new_menu]
+				}
+			}, function() {
+				this.state.menu.forEach((menuItem) => {
+					this.state.recipes.forEach((recipeItem) => {
+						if (menuItem.id == recipeItem.id){
+							var portionMade = menuItem.portion;
+							var portion = recipeItem.portions;
+							var newInventory = {};
+
+							recipeItem.ingredients.forEach((ingredient) => {
+								var ingredientUsed = ingredient.item;
+								var amountUsed = Math.ceil((ingredient.amount/portion)*(portionMade));
+								var currentInventory = 0;
+								var amountLeft = this.state.inventory[ingredientUsed] - amountUsed;
+
+								newInventory = update(this.state.inventory, {[ingredientUsed]: {$set: amountLeft}});
+								this.setState({inventory: newInventory});
+							})
+						}
+					});
+				})
+			})
+		}
 	}
 
 	async loadInventory(){
@@ -185,6 +277,16 @@ class Menu extends Component {
 	}
 
 	render(){
+		const restrictionItems =  this.state.restrictions.map((elem) => {
+			if (elem.description != "None"){
+				return	(<RestrictionEntry key={elem.id} {...elem} />)
+			}
+		});
+
+		const menuItems = this.state.menu.map((elem) => (
+			<MenuEntry key={elem.id} {...elem} />
+		));
+
 		const portions = {}
 		const restrictions = {}
 
@@ -212,15 +314,24 @@ class Menu extends Component {
 			restrictions[elem.title] = unique;
 		});
 
-		const recipeItems = this.state.recipes.map((elem) => (
+		const recipeItems = this.state.recipes.map((elem) => {
+			var selected = 0;
+			this.state.selected.forEach((item) => {
+				if (item.recipe == elem.title){
+					selected = item.portions;
+				}
+			})
+			return(
 			<RecipeEntry 
 				key={elem.id} title={elem.title} 
+				identifier={elem.id}
 				portion={portions[elem.title]} 
+				selected={selected}
 				restriction={restrictions[elem.title].join(", ")}
 				handleSelectRecipe={this.handleSelectRecipe}
 				handlePortionIncrement={this.handlePortionIncrement}
-			/>
-		));
+			/>)
+		});
 
 		return(
 			<div>
@@ -234,7 +345,7 @@ class Menu extends Component {
 				<div className="section-one">
 					<div className="menu-table">
 						<h3>Selected Items</h3>
-						<Table className="ui table">
+						<Table className="ui celled table">
 							<Table.Header>
 								<Table.Row>
 									<Table.HeaderCell className="seven wide" textAlign='center'>Menu Item</Table.HeaderCell>
@@ -243,6 +354,7 @@ class Menu extends Component {
 								</Table.Row>
 							</Table.Header>
 							<Table.Body>
+								{menuItems}
 							</Table.Body>
 						</Table>
 					</div>
@@ -251,12 +363,12 @@ class Menu extends Component {
 						<Table className="ui table celled">
 							<Table.Header>
 								<Table.Row>
-									<Table.HeaderCell className="eight wide" textAlign='center'>Type</Table.HeaderCell>
-									<Table.HeaderCell className="four wide smaller" textAlign='center'>Estimate</Table.HeaderCell>
-									<Table.HeaderCell className="four wide smaller" textAlign='center'>Covered</Table.HeaderCell>
+									<Table.HeaderCell className="ten wide" textAlign='center'>Type</Table.HeaderCell>
+									<Table.HeaderCell className="six wide smaller" textAlign='center'>Estimate</Table.HeaderCell>
 								</Table.Row>
 							</Table.Header>
 							<Table.Body>
+								{restrictionItems}
 							</Table.Body>
 						</Table>
 					</div>
@@ -268,7 +380,7 @@ class Menu extends Component {
 						<Table.Header>
 							<Table.Row>
 								<Table.HeaderCell className="six wide" textAlign='center'>Recipe</Table.HeaderCell>
-								<Table.HeaderCell className="three wide" textAlign='center'>Available Portions</Table.HeaderCell>
+								<Table.HeaderCell className="three wide smaller" textAlign='center'>Available Portions</Table.HeaderCell>
 								<Table.HeaderCell className="four wide" textAlign='center'>Restriction</Table.HeaderCell>
 								<Table.HeaderCell className="three wide" textAlign='center'>Portions</Table.HeaderCell>
 							</Table.Row>

@@ -6,6 +6,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "immutability-helper": "^3.0.0",
     "mysql": "^2.16.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
