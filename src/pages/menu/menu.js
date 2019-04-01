@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Input, Table, Icon, Button, Form } from 'semantic-ui-react'; 
+import { Input, Table, Icon, Button, Form } from 'semantic-ui-react';
 import update from 'immutability-helper';
 import * as recipeAPI from "../apis/recipes";
 import * as inventoryAPI from "../apis/inventory";
@@ -12,20 +12,20 @@ const RecipeEntry = ({identifier, title, portion, restriction, selected, handleS
 			<Table.Cell>{portion}</Table.Cell>
 			<Table.Cell>{restriction}</Table.Cell>
 			<Table.Cell>
-				<Form 
+				<Form
 					title={title}
 					restriction={restriction}
 					identifier={identifier}
 					onSubmit={handleSelectRecipe}>
 					<Form.Field className="portions-cell">
-						<input 
+						<input
 						name={title}
-						className="portions-num" min={0} 
-						max={portion} type="number" 
+						className="portions-num" min={0}
+						max={portion} type="number"
 						value={selected}
 						onChange={handlePortionIncrement} />
 					</Form.Field>
-					<button 
+					<button
 						className="portions-button"
 						type="submit"
 					>
@@ -82,11 +82,11 @@ class Menu extends Component {
 		e.preventDefault();
 		var recipe = e.target.name;
 		var portion = e.target.value;
-		
+
 		let selected = this.state.selected.map((item) => {
 			return (item.recipe == recipe) ? {recipe: recipe, portions: e.target.value} : item;
 		});
-		
+
 		this.setState({selected});
 	}
 
@@ -167,20 +167,26 @@ class Menu extends Component {
 				}
 			}, function() {
 				this.state.menu.forEach((menuItem) => {
+					
+					console.log(this.state.inventory)
 					this.state.recipes.forEach((recipeItem) => {
 						if (menuItem.id == recipeItem.id){
+
 							var portionMade = menuItem.portion;
 							var portion = recipeItem.portions;
 							var newInventory = {};
 
 							recipeItem.ingredients.forEach((ingredient) => {
 								var ingredientUsed = ingredient.item;
+								console.log(ingredientUsed)
 								var amountUsed = Math.ceil((ingredient.amount/portion)*(portionMade));
+								// console.log("Amount used " +amountUsed)
 								var currentInventory = 0;
 								var amountLeft = this.state.inventory[ingredientUsed] - amountUsed;
-
+								console.log("Amount left " +amountLeft)
 								newInventory = update(this.state.inventory, {[ingredientUsed]: {$set: amountLeft}});
 								this.setState({inventory: newInventory});
+
 							})
 						}
 					});
@@ -246,7 +252,7 @@ class Menu extends Component {
 		      	// otherwise add the ingredients to the right recipe
 		      	else{
 		        	let temp = recipes.map((recipe) => {
-		          	return (recipe.hasOwnProperty("id") && recipe.id == entry.recipe_id) ? 
+		          	return (recipe.hasOwnProperty("id") && recipe.id == entry.recipe_id) ?
 		            	{
 		            		id: entry.recipe_id,
 		            		title: entry.name,
@@ -296,7 +302,7 @@ class Menu extends Component {
 			elem.ingredients.forEach((ingredient) => {
 				var need = ingredient.amount;
 				var have = this.state.inventory[ingredient.item];
-				ing_limits.push(Math.floor(have/need));
+				ing_limits.push(have/need);
 			});
 			// calculate the maximum amount of portions
 			var max = Math.min(...ing_limits);
@@ -322,10 +328,10 @@ class Menu extends Component {
 				}
 			})
 			return(
-			<RecipeEntry 
-				key={elem.id} title={elem.title} 
+			<RecipeEntry
+				key={elem.id} title={elem.title}
 				identifier={elem.id}
-				portion={portions[elem.title]} 
+				portion={portions[elem.title]}
 				selected={selected}
 				restriction={restrictions[elem.title].join(", ")}
 				handleSelectRecipe={this.handleSelectRecipe}
